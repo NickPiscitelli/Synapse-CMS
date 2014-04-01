@@ -1,0 +1,29 @@
+<div class="searchPage">
+	<h1>Your search for <span class="search">&#39;[% params.search %]&#39;</span> yielded [% search_results.size %] result[% IF search_results.size != 1%]s[% END %].</h1>
+	<div class="searchResults">
+		[% IF search_results.size %]
+			<dl class="search-results">
+				[% FOREACH search in search_results %]
+					<div class="searchResult">
+						<dt>
+							<a href="[% settings.base_url %]/[% search.name %]">[% search.title %]</a>
+						</dt>
+						<dd>
+							<p>[% search.teaser %]</p>
+							<span>
+								[% search.category %]
+								[% IF search.blog %]Blog entry[% ELSE %]Page[% END %] - [% search.date %]
+							</span>
+						</dd>
+						[% IF loop.last %]
+						[% ELSE %]
+							<div class="dashSeperate"></div>
+						[% END %]
+					</div>
+				[% END %]
+			</dl>
+		[% ELSE %]
+			<p>No results found. Please refine your search criteria and try again.</p>
+		[% END %]
+	</div>
+</div>

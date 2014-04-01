@@ -1,0 +1,39 @@
+[% IF slides.size %]
+	<div id="nodeSlide[% page_id %]" class="hidecarousel carousel slide">
+		<ol class="carousel-indicators">
+			[%  x = 0
+				y = slides.size - 1
+			%]
+			[%
+   				navIndex = [x..y]
+			%]
+			[% FOREACH i in navIndex %]
+			   <li data-target="#nodeSlide[% page_id %]" data-slide-to="[% i %]"[% IF loop.first %] class="active"[% END %]></li>
+		   	[% END %]
+		</ol>
+		<div class="carousel-inner">
+			[% FOREACH slide in slides %]
+			    <div class="[% loop.first ? 'active ' : '' %]item">
+			    	[% IF slide.url %]
+			    	<a target="_blank" style="display: block;" href="[% slide.url %]">[% END %]
+				    	<img src="[% slide.src %]" alt="">
+						<div class="carousel-caption">
+						  <h4>[% slide.title %]</h4>
+						  <p>[% slide.description %]</p>
+						</div>
+					[% IF slide.url %]</a>[% END %]
+			    </div>
+			[% END %]
+		</div>
+		<a class="carousel-control left" href="#nodeSlide[% page_id %]" data-slide="prev">&lsaquo;</a>
+		<a class="carousel-control right" href="#nodeSlide[% page_id %]" data-slide="next">&rsaquo;</a>
+	</div>
+	<script type="text/javascript">
+	$('#nodeSlide[% page_id %]').carousel({
+	  interval: 0
+	});
+	$(function(){
+		$('#nodeSlide[% page_id %]').fadeIn('fast');
+	});
+	</script>
+[% END %]

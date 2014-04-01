@@ -1,0 +1,14 @@
+<div class="block">
+	<h3>FragranceNet.com on Pinterest</h3>
+	<ul class="pin">
+		[% FOREACH pin in pins %]
+		  <li>
+		  	<div class="pinLinks">
+			  	<a href="[% pin.link %]">[% pin.title %]</a>
+			  	<span class="timestamp">[% pin.display_time %]</span>
+			  	<div class="tweet-divider"></div>
+			</div>
+		  </li>
+		[% END %]
+	</ul>
+</div>

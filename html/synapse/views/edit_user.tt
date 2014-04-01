@@ -1,0 +1,49 @@
+<h1>Edit User <span class="user">[% name FILTER ucfirst %]</span></h1>
+<form action="[% settings.base_url %]/edit/user/[% name %]" class="wmd-panel" id="editUser" method="POST">
+    <div class="well form-inline">
+      <div class="formContain">
+        <input type="hidden" name="id" id="user_id" value="[% user_id %]" />
+        <label class="nav-header">Username</label>
+        <input type="text" value="[% name %]" name="name" /><br />
+        <label class="nav-header">Full Name</label>
+        <input type="text" value="[% full %]" name="full" /><br />
+        <label class="nav-header">E-mail Address</label>
+        <input type="text" value="[% email %]" name="email" /><br />
+        <label class="nav-header">Change Password</label>
+        <a href="#" id="passToggle">Show</a>
+        <br class="clear" />
+        <div id="passContain" style="display: none">
+        	<label class="nav-header">Current Password</label>
+        	<input type="password" value="" name="opass" /><br />
+        	<label class="nav-header">New Password</label>
+        	<input type="password" value="" name="pass" /><br />
+        	<label class="nav-header">Confirm Password</label>
+        	<input type="password" value="" name="vpass" /><br />
+        </div>
+        <br class="clear" />
+        <button class="btn" id="save-md" onclick="saveButton()">
+          Update User
+        </button>
+        <br class="clear" />
+       </div>
+    </div>
+</form>
+<script type="text/javascript">
+function saveButton() {
+  sendAJAX("[% settings.base_url %]/edit/user/[% name %]", $('#editUser').serialize());
+}
+$('#passToggle').click(function(e){
+  e.preventDefault();
+  var $this = $(this);
+  if($this.text() == 'Show'){
+    $('#passContain').slideDown('fast',function(){
+      $this.text('Hide');
+    });
+  }else{
+    $('#passContain').slideUp('fast',function(){
+      $this.text('Show');
+    });
+  }
+  return false;
+});
+</script>

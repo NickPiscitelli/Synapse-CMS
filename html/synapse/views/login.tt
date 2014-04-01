@@ -1,0 +1,17 @@
+<script type="text/javascript">
+function saveButton() {
+  sendAJAX("[% settings.base_url %]/login",$('#login').serialize());
+}
+</script>
+
+<h2 class="logHead">User Login</h2>
+<form id="login" name="login" action="[% settings.base_url %]/login" class="center" method="POST">
+	<div>
+		<label for="user">Username:</label>
+		<input type="text" name="user" id="user" value="[% params.user %]" />
+		<label for="pass">Password:</label>
+		<input type="password" id="pass" name="pass" value="[% params.pass %]" />
+		<br />
+		<input type="submit" onclick="saveButton();return false;" value="Login" />
+	</div>
+</form>

@@ -1,0 +1,9 @@
+<div class="searchContain">
+	<form action="/search" accept-charset="UTF-8" method="post" class="allowSubmission" id="search-form">
+		<div class="container-inline">
+	 		<label style="display: none;" for="search_input">Search this site: </label>
+	 		<input type="text" maxlength="128" name="search" id="search_input" value="Search this blog..." onfocus="if (this.value == 'Search this blog...') {this.value = '';}" class="form-text">
+		</div>
+		<input type="image" name="submit" id="search_submit" class="form-submit" src="[% settings.base_url %]/images/search-button.png">
+	</form>
+</div><br />

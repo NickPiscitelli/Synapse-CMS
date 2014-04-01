@@ -1,0 +1,31 @@
+<script type="text/javascript">
+function saveButton() {
+  sendAJAX("[% settings.base_url %]/add/user",$('#register').serialize());
+}
+</script>
+
+<h2 class="logHead">User Register</h2>
+<form id="register" name="register" action="[% settings.base_url %]/add/user" class="center" method="POST">
+	<div>
+		<label for="name">Full Name:</label>
+		<input type="text" name="name" id="name" value="[% params.name %]" />
+		<label for="user">Username:</label>
+		<input type="text" name="user" id="user" value="[% params.user %]" />
+		<label for="user">Email Address:</label>
+		<input type="text" name="email" id="email" value="[% params.email %]" />
+		<label for="pass">Password:</label>
+		<input type="password" id="pass" name="pass" value="" />
+		<label for="vpass">Verify Password:</label>
+		<input type="password" id="vpass" name="verify_pass" value="" />
+		<div class="checkboxes">
+			<label for="pass">Author Content:</label>
+			<input type="checkbox" id="is_author" name="is_author" value="1" [% IF is_author %]checked="checked"[% END %] />
+			<br class="clear" />
+			<label for="pass">Super User:</label>
+			<input type="checkbox" id="is_admin" name="is_admin" value="1" [% IF is_admin %]checked="checked"[% END %] />
+			<div class="clear submit">
+				<input type="submit" onclick="saveButton();return false;" value="Register" />
+			</div>
+		</div>
+	</div><br /><br />
+</form>

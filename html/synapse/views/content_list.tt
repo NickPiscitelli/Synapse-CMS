@@ -1,0 +1,80 @@
+[% IF list.size %]
+	[% IF params.type == 'user' %]
+		<div class="contentList">
+			<form action="[% settings.base_url %]/list/[% type %]" method="POST" name="list" id="list">
+				<table>
+					<tr>
+						<th>Delete</th>
+						[% FOREACH key in header %]
+							<th>[% key %]</th>
+						[% END %]
+					</tr>
+					[% FOREACH item in list %]
+						<tr style="background: #[% IF loop.index % 2 %]ebebeb[% ELSE %]fff[% END %]">
+							<td>
+								<input [% IF item.id == 1 %]disabled="disabled"[% END %] name="del_[% item.id %]" value="1" type="checkbox" />
+							</td>
+							<td>
+								<select [% IF item.id == 1 %]disabled="disabled"[% END %] class="roles" name="role_[% item.id %]">
+									<option [% IF item.Admin %]selected="selected"[% END %]>Administrator</option>
+									<option [% IF item.Author && !item.Admin %]selected="selected"[% END %]>Author</option>
+									<option [% IF !item.Author && !item.Admin %]selected="selected"[% END %]>Registered</option>
+								</select>
+							</td>
+							[% FOREACH key in data_keys %]
+								[% IF key == 'role' %]
+								[% ELSIF key == 'id' %]
+								[% ELSE %]
+									<td>[% item.$key %]</td>
+								[% END %]
+							[% END %]
+						</tr>
+					[% END %]
+				</table>
+				<input type="submit" onclick="saveButton();return false;" value="Submit Form" />
+			</form>
+		</div>
+	[% ELSIF params.type == 'blog' %]
+		<div class="contentList">
+			<form action="[% settings.base_url %]/list/[% type %]" method="POST" name="list" id="list">
+				<table>
+					<tr>
+						<th>Delete</th>
+						[% FOREACH key in header %]
+							<th>[% key %]</th>
+						[% END %]
+					</tr>
+					[% FOREACH item in list %]
+						<tr style="background: #[% IF loop.index % 2 %]ebebeb[% ELSE %]fff[% END %]">
+							<td>
+								<input name="del_[% item.id %]" value="1" type="checkbox" />
+							</td>
+							[% FOREACH key in data_keys %]
+								[% IF key == 'published' %]
+									<td>
+										<input class="publish" disabled="disabled" name="pub_[% item.id %]" value="1" type="checkbox" [% IF item.published %]checked="checked"[% END %] />
+									</td>
+								[% ELSIF key == 'id' %]
+								[% ELSIF key == 'title' %]
+									<td>
+										<a href="[% settings.base_url %]/[% item.name %]">
+											[% item.$key %]
+										</a>
+									</td>
+								[% ELSE %]
+									<td>[% item.$key %]</td>
+								[% END %]
+							[% END %]
+						</tr>
+					[% END %]
+				</table>
+				<input type="submit" onclick="saveButton();return false;" value="Submit Form" />
+			</form>
+		</div>
+	[% END %]
+	<script type="text/javascript">
+	function saveButton() {
+	  sendAJAX("[% settings.base_url %]/list/[% type %]",$('#list').serialize());
+	}
+	</script>
+[% END %]

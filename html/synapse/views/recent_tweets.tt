@@ -1,0 +1,20 @@
+<div class="block">
+	<h3>FragranceNet.com on Twitter</h3>
+	<ul class="tweet">
+		[% FOREACH tweet in tweets %]
+		  <li>
+		  	<span class="tweet-text">[% tweet.title %]</span>
+		  	<div class="tweet-time">
+		  		<a href="[% tweet.link %]">
+		  			[% tweet.display_time %]
+		  		</a>
+		  	</div>
+		  	<div class="tweet-divider"></div>
+		  </li>
+		[% END %]
+	</ul>
+	<p class="twit-link" align="right">
+		<img style="margin-top: 5px;" src="[% settings.base_url %]/images/ico-twitter.png" alt="Follow us on Twitter">
+		<a href="http://www.twitter.com/FragranceNet/">Follow us on Twitter</a>
+	</p>
+</div>

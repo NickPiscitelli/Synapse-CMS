@@ -1,0 +1,10 @@
+[% IF blogs.size %]
+<div class="block blogs">
+	<h3>Recent Blog Posts</h3>
+	<ul class="blog">
+		[% FOREACH blog in blogs %]
+		  	<li><a href="[% settings.base_url %]/[% blog.name %]">[% blog.title %]</a></li>
+		[% END %]
+	</ul>
+</div>
+[% END %]

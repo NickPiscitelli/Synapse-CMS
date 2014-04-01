@@ -1,0 +1,10 @@
+[% IF tags.size %]
+	<div class="block tag">
+		<h3>FragranceNet.com Tags</h3>
+		<div class="tagContain">
+			[% FOREACH tag in tags %]
+				<a class="tag" style="font-size: [% tag.font_size %]em;" href="[% settings.base_url %]/term/[% tag.term %]">[% tag.term %]</a>
+			[% END %]
+		</div>
+	</div>
+[% END %]

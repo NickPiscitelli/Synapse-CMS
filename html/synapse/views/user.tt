@@ -1,0 +1,20 @@
+<div id="welcome" class="page">
+	<h1>Welcome [% user_info.full %]!</h1>
+	<div>
+		<p>Username: [% user_info.name %]</p>
+		<p>E-mail Address: [% user_info.email %]</p>
+		<p>Member Since: [% user_info.created %]</p>
+		[% IF user_info.is_admin %]
+			<p>User Type: Administrator</p>
+		[% ELSIF user_info.is_author %]
+			<p>User Type: Author</p>
+		[% ELSE %]
+			<p>User Type: Registered</p>
+		[% END %]
+	</div>
+	[% IF session.username == user_info.name %]
+		<div class="editLink">
+			<a href="[% settings.base_url %]/edit/user/[% user_info.name %]">Edit</a>
+		</div>
+	[% END %]
+</div>

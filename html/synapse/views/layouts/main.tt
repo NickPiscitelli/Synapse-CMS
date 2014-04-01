@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=[% settings.charset %]" />
+		<title>[% page_title || settings.site_title || 'Eautalk - The Official Blog of FragranceNet.com' %]</title>
+		<script type="text/javascript" src="[% request.uri_base %]/javascripts/jquery-1.9.1.min.js"></script>
+		[% IF settings.jquery_ui %]
+			<script type="text/javascript" src="[% request.uri_base %]/javascripts/jquery-ui-1.10.3.custom.min.js"></script>
+			<link rel="stylesheet" href="[% request.uri_base %]/css/jquery-ui.min.css" />
+		[% END %]
+		<script type="text/javascript" src="[% request.uri_base %]/bootstrap/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="[% request.uri_base %]/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="[% request.uri_base %]/javascripts/bootstrap.growl.min.js"></script>
+		<link rel="stylesheet" href="[% request.uri_base %]/css/style.css" />
+		<script type="text/javascript" src="[% request.uri_base %]/javascripts/global.js"></script>
+	</head>
+	<body>
+		<!-- Eautalk Server (dev) -->
+		<div class="container">
+		  <div class="page-header">
+		    <a href="http://www.fragrancenet.com/blog">
+		      <div class="hleft"></div>
+		    </a>
+		    <a href="http://www.fragrancenet.com">
+		      <div class="hright"></div>
+		    </a>
+		  </div>
+		  <div id="headNav">
+		    <div class="borderContain">
+		        <div id="navContain">
+				    <ul id="main" class="nav nav-list">
+				      <li class="first"><a href="[% settings.base_url %]/" [% home_active ? 'class="active"' : '' %]>Home</a></li>
+				      <li><a[% IF page == 'about-us' %] class="active"[% END %] href="[% settings.base_url %]/about-us">About</a></li>
+				    </ul>
+				</div>
+				<div class="social">
+				  <a href="http://pinterest.com/fragrancenet" rel="nofollow">
+				    <img class="socailImg" src="[% settings.base_url %]/images/pinterest_icon.png">
+				  </a>
+				  <a href="http://www.youtube.com/user/fragrancenet" rel="nofollow">
+				    <img class="socailImg" src="[% settings.base_url %]/images/youtube.png">
+				  </a>
+				  <a href="http://www.twitter.com/fragrancenet" rel="nofollow">
+				    <img class="socailImg" src="[% settings.base_url %]/images/twitter.png">
+				  </a>
+				  <a href="http://www.facebook.com/pages/FragranceNetcom/33871850991" rel="nofollow">
+				    <img class="socailImg" src="[% settings.base_url %]/images/facebook.png">
+				  </a>
+				</div>
+				<a href="http://www.fragrancenet.com" class="backTo">
+				  <div id="backTo">
+				    <p id="gotoLabel">go to</p>
+				    <p style="float: right;">
+				      <img id="fnetLogo" style="padding: 5px 0 0 7px;" src="[% settings.base_url %]/images/fnetname.png">
+				    </p>
+				  </div>
+				</a>
+		    </div>
+		  </div>
+
+		  <div class="row">
+		    <div id="contentTop"></div>
+		    <div id="contentWrapper">
+		      <div class="padContent">
+		        <div class="span10" id="content">
+		          <div id="contentInnerTop"></div>
+		          <div id="contentInnerMain">
+		          	<div class="page-contents">
+		            	[% content %]
+		            </div>
+		          </div>
+		          <div id="contentInnerBottom"></div>
+		        </div>
+		        <div class="span2" id="menus">
+		          <div id="rightSidebarTop"><!-- --></div>
+		          <div id="rightSidebar">
+		          	<div class="sidebarContent">
+			          	[% sidebar || session.sidebar %]
+			        </div>
+		          </div>
+		          <div id="sidebarBottom"></div>
+		        </div>
+		      </div>
+		      <ul id="footer_links">
+                <li><a href="[% settings.base_url %]/">Home</a></li>
+                <li><a href="[% settings.base_url %]/about-us">About</a></li>
+                <li><a href="http://www.fragrancenet.com">Go To FragranceNet.com</a></li>
+              </ul>
+              <p class="copyright">Copyright © 2013. All Rights Reserved.</p>
+		    </div>
+		    <div id="contentBottom"></div>
+		  </div>
+		</div>
+		[% IF session.username && (session.is_author || session.is_admin)  %]
+		<div id="adminMenu">
+			<div class="btn-group">
+			  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+			    <i class="icon-user icon-white"></i> Welcome [% session.username FILTER ucfirst %]!
+			    <span class="caret"></span>
+			  </a>
+			  <ul class="dropdown-menu">
+			  	<li><a href="[% settings.base_url %]/add/page">Add Blog</a></li>
+			    <li><a href="[% settings.base_url %]/author/[% session.username %]">My Blog</a></li>
+				[% IF session.is_admin %]
+					<li><a href="[% settings.base_url %]/list/blog">Blog List</a></li>
+					<li><a href="[% settings.base_url %]/add/user">Add User</a></li>
+					<li><a href="[% settings.base_url %]/list/user">User List</a></li>
+				[% END %]
+				<li><a href="[% settings.base_url %]/user/[% session.username %]">My Account</a></li>
+				<li><a href="[% settings.base_url %]/edit/user/[% session.username %]">Edit Account</a></li>
+				<li><a href="[% settings.base_url %]/logout">Logout</a></li>
+			  </ul>
+			</div>
+		</div>
+		[% END %]
+		[% IF !exclude_sharethis %]
+			<script type="text/javascript">var switchTo5x=true;</script>
+			<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+			<script type="text/javascript">stLight.options({publisher: "2578170c-1f93-4f17-923a-43a9d349adb1", doNotHash: true, doNotCopy: false, hashAddressBar: false});</script>
+		[% END %]
+		[% IF page_editing %]
+			<script type="text/javascript" src="[% request.uri_base %]/javascripts/tinymce/tinymce.min.js"></script>
+			[% IF !settings.jquery_ui %]
+				<script type="text/javascript" src="[% request.uri_base %]/javascripts/jquery.ui.widget.js"></script>
+			[% END %]
+			<script type="text/javascript" src="[% request.uri_base %]/javascripts/jquery.iframe-transport.js"></script>
+			<script type="text/javascript" src="[% request.uri_base %]/javascripts/jquery.fileupload.min.js"></script>
+			<script type="text/javascript">
+			$(function () {
+			    $('#fileupload').fileupload({
+			        dataType: 'json',
+			        done: function (e, data) {
+			            $.each(data.files, function (index, file) {
+			                var div = $('<div />');
+			            	$('<img src="'+'[% request.uri_base %]/images/'+file.name+'" />').appendTo(div);
+			            	$('<p />').text(file.name).appendTo(div)
+			                div.appendTo($('#imgPreview').show());
+			            });
+			        }
+			    });
+			});
+			</script>
+		[% END %]
+		[% IF session.invalid_credentials %]
+			<script type="text/javascript">
+			$(function () {
+			    growler({
+			    	message: "You don't have permission to access that page.",
+			    	success: false
+			    });
+			});
+			</script>
+			[% session.delete('invalid_credentials') %]
+		[% END %]
+		<div id="growler" style="display: none">
+			<div class="ui-pnotify ui-widget ui-helper-clearfix" style="width: 300px; opacity: 1; display: block; right: 15px; top: 15px;">
+				<div class="ui-pnotify-container ui-pnotify-shadow ui-corner-all ui-state-highlight" style="min-height: 16px;">
+					<div class="ui-pnotify-closer" style="cursor: pointer; visibility: hidden;">
+						<span class="ui-icon ui-icon-circle-close"></span>
+					</div>
+					<div class="ui-pnotify-icon">
+						<span class="ui-icon ui-icon-info"></span>
+					</div>
+					<h4 class="ui-pnotify-title"></h4>
+					<div class="ui-pnotify-text"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,81 @@
+[% IF blog_list.size %]
+<div id="homeContain">
+	[% FOREACH blog in blog_list %]
+		<div class="page">
+			<h1><a href="[% settings.base_url %]/[% blog.name %]">[% blog.title %]</a></h1>
+			<span class="author">Posted by [% IF blog.username %]<a href="[% settings.base_url %]/author/[% blog.username %]">[% blog.username FILTER ucfirst %]</a>[% ELSE %]Anonymous[% END %] on [% blog.human_date %]</span>
+			<div class="body">
+				[% IF session.can_author %]
+					<div class="editLink">
+						<a href="[% settings.base_url %]/edit/page/[% blog.name %]">Edit</a>
+					</div>
+				[% END %]
+				[% blog.html %]
+				<div class="metaFooter">
+					<div class="tagList">
+						[% IF blog.tags.size %]
+							<span>Blog Tags: </span>
+							[% FOREACH tag in blog.tags %]
+								<a href="[% settings.base_url %]/term/[% tag %]">[% tag %]</a>[% loop.last ? '' : ', ' %]
+							[% END %]
+						[% END %]
+					</div>
+					<div class="author">
+						[% IF blog.username %]
+							<a href="[% settings.base_url %]/author/[% blog.username %]">[% blog.username FILTER ucfirst %]'s Blog</a>
+						[% END %]
+					</div>
+					<div class="ShareThis">
+						<span class='st_facebook' displayText=''></span>
+						<span class='st_twitter' displayText=''></span>
+						<span class='st_googleplus' displayText=''></span>
+						<span class='st_email' displayText=''></span>
+						<span class='st_tumblr' displayText=''></span>
+						<span class='st_blogger' displayText=''></span>
+						<span class='st_pinterest' displayText=''></span>
+					</div>
+				</div>
+			</div>
+			[% IF loop.last && !home_active %]
+			[% ELSE %]
+				<div class="dashSeperate blog"></div>
+			[% END %]
+		</div>
+	[% END %]
+	[% IF paginate %]
+		<ul class="paginate">
+			[% IF active_page != 0 %]
+				<li class="pager-first first">
+					<a href="[% settings.base_url %]/" title="Go to first page">&laquo; first</a>
+				</li>
+				<li class="pager-previous">
+					<a href="[% settings.base_url %]/[% IF prev %]?page=[% prev %][% END %]" rel="prev" title="Go to previous page">‹ previous</a>
+				</li>
+				[% IF start_ellipsis %]
+					<li class="pager-ellipsis">
+						&hellip;
+					</li>
+				[% END %]
+			[% END %]
+			[% FOREACH p IN page_list %]
+				<li class="pager-item[% IF (p - 1) == active_page %] active[% END %]">
+					<a href="[% settings.base_url %]/[% IF p != 1 %]?page=[% p - 1 %][% END %]" title="Go to page [% p %]">[% p %]</a>
+				</li>
+			[% END %]
+			[% IF active_page != max_pages %]
+				[% IF end_ellipsis %]
+					<li class="pager-ellipsis">
+						&hellip;
+					</li>
+				[% END %]
+				<li class="pager-next">
+					<a href="[% settings.base_url %]/?page=[% next_page %]" rel="next" title="Go to next page">next ›</a>
+				</li>
+				<li class="pager-last last">
+					<a href="[% settings.base_url %]/?page=[% max_pages - 1 %]" title="Go to last page">last &raquo;</a>
+				</li>
+			[% END %]
+		</ul>
+	[% END %]
+</div>
+[% END %]

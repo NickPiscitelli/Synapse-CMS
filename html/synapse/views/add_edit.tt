@@ -1,0 +1,177 @@
+<script type="text/javascript">
+function saveButton() {
+  var cat = $('select[name=category]').val();
+  var html = tinyMCE.activeEditor.getContent();
+  var qs = '';
+  $.map({
+    cat: cat,
+    published: $('input[name=published_input]').prop('checked') ? '1' : '',
+    front_page: $('input[name=front_page_input]').prop('checked') ? '1' : ''
+  },function(v,k){
+    qs += '&'+k+'='+encodeURIComponent(v);
+  });
+  qs += '&html='+encodeURIComponent(html);
+  sendAJAX("/add/page", $('#edit').serialize()+qs);
+}
+
+$(function () {
+  tinymce.init({
+      selector: "#wmd-input",
+      theme: "modern",
+      plugins: [
+           "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+           "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+           "save table contextmenu directionality emoticons template paste textcolor"
+     ],
+     content_css: "/assets/tinymce/skins/lightgray/content.min.css",
+     toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons", 
+     style_formats: [
+          {title: 'Bold text', inline: 'b'},
+          {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+          {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+          {title: 'Example 1', inline: 'span', classes: 'example1'},
+          {title: 'Example 2', inline: 'span', classes: 'example2'},
+          {title: 'Table styles'},
+          {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+      ]
+   });
+   $('#page-name').keypress(function(){
+      $(this).val(sanitizeURL($(this).val()));
+   });
+   $('#page-title').blur(function(){
+      $('#page-name').val($('#page-name').val() ? $('#page-name').val() : sanitizeURL($(this).val()));
+   });
+});
+
+function sanitizeURL(url){
+  return url.replace(/[^a-z-0-9 ]/ig,'').replace(/ /g,'-').toLowerCase()
+}
+</script>
+
+<div class="wmd-panel">
+  <h1 class="[% pid ? 'edit' : 'add' %]">
+    [% IF pid %]Editing Page: <span clas="page">&#39;[% name %]&#39;</span>[% ELSE %]Add Page[% END %]
+  </h1>
+  <div id="wmd-button-bar"></div>
+  <form name="edit" action="[% settings.base_url %]/add/page" id="edit" method="POST">
+    <textarea class="wmd-input" id="wmd-input">[% input %]</textarea>
+    <div id="wmd-preview" class="page-contents"></div>
+    <div class="well form-inline">
+      <div class="formContain">
+        <input type="hidden" name="create_type"  value="[% pid ? 'edit' : 'add' %]" />
+        <input type="hidden" name="id" id="page_id" value="[% pid %]" />
+        <label class="nav-header">Title</label>
+        <input
+          type="text"
+          id="page-title"
+          placeholder="Page Title"
+          value="[% title_value %]"
+          name="title"
+        ><br />
+        <label class="nav-header">URL</label>
+        <input
+          type="text"
+          [% disable_url %]
+          id="page-name"
+          placeholder="URL"
+          value="[% name %]"
+          [% disable_url ? '' : 'name="name"' %]
+        ><br />
+        [% IF disable_url %]
+          <input type="hidden" name="name" value="[% name %]" />
+        [% END %]
+        <label class="nav-header">Category</label>
+        <select id="category" name="category">
+          [% FOREACH cat in categories %]
+            <option value="[% cat.id %]">[% cat.name %]</option>
+          [% END %]
+        </select><br />
+        <label class="nav-header">Tags:<span class="example">A comma-seperated list. (i.e. scent,perfume,makeup)</span></label>
+        <input type="hidden" name="orig_tags" value="[% tags %]" />
+        <input type="text" name="tags" value="[% tags %]" />
+        <label class="nav-header">Published</label>
+        <input type="checkbox" name="published_input" value="1" [% published_active %] /><br />
+        <label class="nav-header">Promote to Front Page</label>
+        <input type="checkbox" name="front_page_input" value="1" [% front_active %] /><br />
+        [% IF settings.enable_slideshow %]
+          <label class="nav-header">Slideshow Controls</label>
+          <a id="slideToggle" href="#">[% slides.size ? 'Hide' : 'Show' %]</a><br />
+          <div id="slideShow" style="display: [% slides.size ? 'block' : 'none' %];">
+            [% IF slides.size %]
+              [% FOREACH slide in slides %]
+                <div class="slideshowElement [% 'first' IF loop.first %]">
+                  <label class="nav-header">Delete Slide</label>
+                  <input type="checkbox" name="del_[% slide.id %]" value="1" /><br />
+                  <input type="hidden" name="img_id" value="[% slide.id %]" />
+                  <label class="nav-header">Image Source</label>
+                  <input type="text" name="img_src" value="[% slide.src %]" /><br />
+                  <label class="nav-header">URL</label>
+                  <input type="text" name="img_url" value="[% slide.url %]" /><br />
+                  <label class="nav-header">Image Title</label>
+                  <input type="text" name="img_title" value="[% slide.title %]" /><br />
+                  <label class="nav-header">Image Text</label>
+                  <textarea name="img_text">[% slide.description %]</textarea><br class="clear" />
+                </div>
+              [% END %]
+            [% ELSE %]
+              <div class="slideshowElement first">
+                <label class="nav-header">Image Source</label>
+                <input type="text" name="img_src" value="" /><br />
+                <label class="nav-header">Slide URL</label>
+                <input type="text" name="img_url" value="" /><br />
+                <label class="nav-header">Image Title</label>
+                <input type="text" name="img_title" value="" /><br />
+                <label class="nav-header">Image Text</label>
+                <textarea name="img_text"></textarea><br class="clear" />
+              </div>
+              <div class="slideshowElement">
+                <label class="nav-header">Image Source</label>
+                <input type="text" name="img_src" value="" /><br />
+                <label class="nav-header">URL</label>
+                <input type="text" name="img_url" value="" /><br />
+                <label class="nav-header">Image Title</label>
+                <input type="text" name="img_title" value="" /><br />
+                <label class="nav-header">Image Text</label>
+                <textarea name="img_text"></textarea><br class="clear" />
+              </div>
+            [% END %]
+            <a class="addSlide" href="#">Add another slide element</a>
+          </div>
+          <br class="clear" />
+          <script type="text/javascript">
+          $('#slideToggle').click(function(e){
+            e.preventDefault();
+            var $this = $(this);
+            if($this.text() == 'Show'){
+              $('#slideShow').slideDown('fast',function(){
+                $this.text('Hide');
+              });
+            }else{
+              $('#slideShow').slideUp('fast',function(){
+                $this.text('Show');
+              });
+            }
+            return false;
+          });
+          $('a.addSlide').click(function(e){
+            e.preventDefault();
+            $('div.slideshowElement').first().clone(true,true).removeClass('first').find('input').val('').end().appendTo('#slideShow');
+            $('a.addSlide').appendTo('#slideShow');
+            return false;
+          });
+          </script>
+        [% END %]
+        <label class="nav-header">Upload Files</label>
+        <input id="fileupload" type="file" name="files" data-url="[% settings.base_url %]/upload" multiple><br />
+        <div id="imgPreview">
+          <label class="nav-header">Uploaded Images Preview</label>
+        </div>
+        <button class="btn" id="save-md" onclick="saveButton()">
+          Save Page
+        </button>
+        <br class="clear" />
+      </div>
+    </div>
+  </form>
+</div>
+
