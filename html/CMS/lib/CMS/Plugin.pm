@@ -93,7 +93,7 @@ sub generateDateTime {
 }
 
 sub build_cache {
-	my ($self, $key, $builder, $opt) = (@_);
+    my ($self, $key, $builder, $opt) = (@_);
     $key =~ s!/[^\w\-/\.:]!_!g;
     $self->error->("Cache builder must be a CODE reference.")
     	unless ref $builder eq 'CODE';
@@ -145,6 +145,8 @@ sub cache {
     });
 };
 
+# TODO: Clean up.
+# Also, see therapist. What the hell was I thinking? 
 sub paginate {
 	my ($self,$set,$page,$rpp) = @_;
 	return $set unless ref $set eq 'ARRAY';
