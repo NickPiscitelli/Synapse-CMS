@@ -22,10 +22,7 @@ use Moose;
 extends qw(CMS::Models::Base);
 no Moose;
 
-sub check_user{
-	return 'fuck';
-
-}
+sub check_user{}
 
 1;
 
