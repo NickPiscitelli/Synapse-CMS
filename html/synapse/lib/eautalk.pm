@@ -9,17 +9,16 @@ our $VERSION = '1.0';
 my $rpp = 3;
 
 get '/' => sub {
-	debug params->{page};
     return template 'blog_list', {
     	home_active => '1',
-		active_page => params->{page} // 0,
-		blog_list => cms->blog->paginate(
-			cms->blog->recent_posts(
-				front_page => '1',
-				tags => '1',
-				full_set => '1'
-			)
-		,params->{page},$rpp),
+	active_page => params->{page} // 0,
+	blog_list => cms->blog->paginate(
+		cms->blog->recent_posts(
+			front_page => '1',
+			tags => '1',
+			full_set => '1'
+		)
+	,params->{page},$rpp),
     };
 };
 
@@ -85,10 +84,6 @@ get '/search/:search' => sub {
 get '/user/:user' => sub {
 	(cms->session->{invalid_credentials} = '1' && return redirect '/')
 		unless cms->session->{username} && cms->session->{username} eq params->{user};
-	debug cms->user->fetch_user(
-			bind_var => params->{user},
-			bind_name => 'name'
-		);
 	template 'user', {
 		user_info => cms->user->fetch_user(
 			bind_var => params->{user},
@@ -187,7 +182,7 @@ get '/+:page' => sub {
 		status 'not_found';
 		send_error("Not Found", 404);
 	}
-    template 'page', $ref;
+    	template 'page', $ref;
 };
 
 post '/upload' => sub {
